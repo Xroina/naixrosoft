@@ -12,6 +12,12 @@ import jp.naixrosoft.xronia.script.exception.ExecuteException;
 import jp.naixrosoft.xronia.script.exception.StackException;
 import jp.naixrosoft.xronia.script.execute.Value.Type;
 
+/**
+ * 実行クラス
+ *
+ * @author xronia
+ *
+ */
 public abstract class Execute {
 	private ByteCode code;
 	private Stack stack = new Stack();
@@ -24,14 +30,30 @@ public abstract class Execute {
 			LocalDateTime.of(2000, 1, 1, 0, 0, 0);
 	private volatile boolean running = true;
 
+	/**
+	 * コントラクタ
+	 *
+	 * @param c	バイトコード
+	 */
 	protected Execute(ByteCode c) {
 		code = c;
 	}
 
+	/**
+	 * 停止メソッド<br>
+	 *
+	 * 他スレッドから停止させるときに使用
+	 */
 	public synchronized void stop() {
 		running = false;
 	}
 
+	/**
+	 * 実行メソッド
+	 *
+	 * @throws ExecuteException
+	 * @throws ByteCodeException
+	 */
 	protected void execute() throws ExecuteException, ByteCodeException {
 
 		for(pc = 0; pc < code.size() && running; pc++) {
@@ -299,30 +321,30 @@ public abstract class Execute {
 				break;
 
 			case STICK_X:
-				stack.set(sp, stickX());
+				stack.set(sp, getStickX());
 				sp++;
 				break;
 
 			case STICK_Y:
-				stack.set(sp, stickY());
+				stack.set(sp, getStickY());
 				sp++;
 				break;
 
 			case BUTTON:
-				stack.set(sp, button());
+				stack.set(sp, getButton());
 				sp++;
 				break;
 
 			case PRINT:
 				switch(stack.getType(sp - 1)) {
 				case INT:
-					print(String.valueOf(stack.getInt(sp - 1)));
+					doPrint(String.valueOf(stack.getInt(sp - 1)));
 					break;
 				case DOUBLE:
-					print(String.valueOf(stack.getDouble(sp - 1)));
+					doPrint(String.valueOf(stack.getDouble(sp - 1)));
 					break;
 				case STRING:
-					print(stack.getString(sp - 1));
+					doPrint(stack.getString(sp - 1));
 					break;
 				default:
 					throw new ExecuteException("Not Support Value.");
@@ -331,11 +353,11 @@ public abstract class Execute {
 				break;
 
 			case CLS:
-				cls();
+				doCls();
 				break;
 
 			case LOCATE:
-				locate((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				setLocate((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
 				sp -= 2;
 				break;
 
@@ -831,12 +853,12 @@ public abstract class Execute {
 	 *
 	 * @param str 出力文字列
 	 */
-	protected abstract void print(String str);
+	protected abstract void doPrint(String str);
 
 	/**
 	 * クリアスクリーン
 	 */
-	protected abstract void cls();
+	protected abstract void doCls();
 
 	/**
 	 * 座標指定
@@ -844,13 +866,28 @@ public abstract class Execute {
 	 * @param x	座標
 	 * @param y 座標
 	 */
-	protected abstract void locate(int x, int y);
+	protected abstract void setLocate(int x, int y);
 
-	protected abstract double stickX();
+	/**
+	 * スティックX座標取得
+	 *
+	 * @return	X座標
+	 */
+	protected abstract double getStickX();
 
-	protected abstract double stickY();
+	/**
+	 * スティックY座標取得
+	 *
+	 * @return	Y座標
+	 */
+	protected abstract double getStickY();
 
-	protected abstract long button();
+	/**
+	 * スティックボタン取得
+	 *
+	 * @return	ボタンビットマップ
+	 */
+	protected abstract long getButton();
 
 	/**
 	 * キャラクタ取得

@@ -4,11 +4,28 @@ import jp.naixrosoft.xronia.script.bytecode.ByteCode;
 import jp.naixrosoft.xronia.script.exception.ByteCodeException;
 import jp.naixrosoft.xronia.script.exception.ExecuteException;
 
+/**
+ * 実行クラス
+ *
+ * @author xronia
+ *
+ */
 public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
+	/**
+	 * コントラクタ
+	 *
+	 * @param code	バイトコード
+	 */
 	public Execute(ByteCode code) {
 		super(code);
 	}
 
+	/**
+	 * 実行メソッド
+	 *
+	 * @throws ExecuteException
+	 * @throws ByteCodeException
+	 */
 	public void execute() throws ExecuteException, ByteCodeException {
 		super.execute();
 	}
@@ -17,44 +34,74 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 * print 本体
 	 */
 	@Override
-	protected void print(String str) {
+	protected void doPrint(String str) {
 		System.out.print(str);
 	}
 
 	/**
-	 * クリアスクリーン
+	 * クリアスクリーン<br>
+	 * コマンドプロンプトでは実行できないためスタブ
 	 */
 	@Override
-	protected void cls() {
-		;
+	protected void doCls() {
+		;		// 何もしない
 	}
 
 	/**
-	 * Locate
+	 * 座標指定<br>
+	 * コマンドプロンプトでは指定できないためスタブ
 	 *
 	 * @param x	座標
 	 * @param y 座標
 	 */
 	@Override
-	protected void locate(int x, int y) {
-		;
+	protected void setLocate(int x, int y) {
+		;		// 何もしない
 	}
 
+	/**
+	 * スティックX座標取得<br>
+	 * コマンドプロンプトでは取得不能のためスタブ
+	 *
+	 * @return	X座標
+	 *
+	 */
 	@Override
-	protected double stickX() {
+	protected double getStickX() {
 		return 0.0;
 	}
 
+	/**
+	 * スティックY座標取得<br>
+	 * コマンドプロンプトでは取得不能のためスタブ
+	 *
+	 * @return	Y座標
+	 *
+	 */
 	@Override
-	protected double stickY() {
+	protected double getStickY() {
 		return 0.0;
 	}
 
+	/**
+	 * スティックボタン取得<br>
+	 * コマンドプロンプトでは取得不能のためスタブ
+	 *
+	 * @return	ボタンビットマップ
+	 */
 	@Override
-	protected long button() {
+	protected long getButton() {
 		return 0;
 	}
 
+	/**
+	 * キャラクタ取得<br>
+	 * コマンドプロンプトでは取得不能のためスタブ
+	 *
+	 * @param x	座標
+	 * @param y 座標
+	 * @return	キャラクタ文字
+	 */
 	@Override
 	protected String getCharacter(int x, int y) {
 		return "";
