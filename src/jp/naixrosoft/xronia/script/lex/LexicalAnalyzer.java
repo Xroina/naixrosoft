@@ -109,7 +109,7 @@ public class LexicalAnalyzer {
 					token.kind = Kind.INT_VALUE;
 				} catch(NumberFormatException e1) {
 					try {
-						token.dbl = Long.parseLong(token.str);
+						token.dbl = Double.parseDouble(token.str);
 						token.kind = Kind.DOUBLE_VALUE;
 					} catch(NumberFormatException e2) {
 						throw new LexicalAnalyzerException(
