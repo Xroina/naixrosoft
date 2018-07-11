@@ -41,15 +41,6 @@ public class LexicalAnalyzer {
 
 			switch(state) {
 			case NONE:
-				if((ch == '-' || ch == '+') &&
-						(Character.isDigit(ch2) || ch2 == '.')) {
-					token.str += ch;
-					token.str += ch2;
-					state = State.VALUE;
-					i++;
-					col++;
-					break;
-				}
 				if(Character.isDigit(ch) || ch == '.') {	// 数字？
 					token.str += ch;
 					state = State.VALUE;
@@ -64,7 +55,7 @@ public class LexicalAnalyzer {
 					state = State.OPERATOR;
 				} else if(ch == '\n' || ch == '\r'
 						|| (ch == '\r' && ch2 == '\n')) {	// 改行？
-					if(ch2 == '\n') i++;
+					if(ch == '\r' && ch2 == '\n') i++;
 					token.kind = Kind.CR;
 					token.line = line;
 					token.col  = col;

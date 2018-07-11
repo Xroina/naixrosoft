@@ -212,6 +212,7 @@ public class Perser {
 		case DOUBLE_VALUE:
 			code.add(OpCode.PUSH_DOUBLE);
 			code.add(token.dbl);
+			break;
 
 		case STRING_LITERAL:
 			code.add(OpCode.PUSH_STRING);
