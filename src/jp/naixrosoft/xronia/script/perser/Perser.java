@@ -904,18 +904,6 @@ public class Perser {
 	}
 
 	/**
-	 * printステートメント
-	 *
-	 * @throws ParseException
-	 */
-	private void parse_print_stmt() throws ParseException {
-
-		parse_expr();
-
-		code.add(OpCode.PRINT);
-	}
-
-	/**
 	 * goto/gosubステートメント
 	 *
 	 * @throws ParseException
@@ -977,18 +965,6 @@ public class Perser {
 	}
 
 	/**
-	 * locateステートメント
-	 *
-	 * @throws ParseException
-	 */
-	private void parse_locate_stmt() throws ParseException {
-
-		parse_expr();
-
-		code.add(OpCode.LOCATE);
-	}
-
-	/**
 	 * ステートメントパーサー
 	 *
 	 * @throws ParseException
@@ -1007,7 +983,12 @@ public class Perser {
 			parse_while_stmt();
 			break;
 		case PRINT:
-			parse_print_stmt();
+			parse_expr();
+			code.add(OpCode.PRINT);
+			break;
+		case DEBUG:
+			parse_expr();
+			code.add(OpCode.DEBUG);
 			break;
 		case GOTO:
 		case GOSUB:
@@ -1027,7 +1008,24 @@ public class Perser {
 			code.add(OpCode.CLS);
 			break;
 		case LOCATE:
-			parse_locate_stmt();
+			parse_expr();
+			code.add(OpCode.LOCATE);
+			break;
+		case SCROLL_NEXT:
+			parse_expr();
+			code.add(OpCode.SCROLL_NEXT);
+			break;
+		case SCROLL_PREV:
+			parse_expr();
+			code.add(OpCode.SCROLL_PREV);
+			break;
+		case SCROLL_LEFT:
+			parse_expr();
+			code.add(OpCode.SCROLL_LEFT);
+			break;
+		case SCROLL_RIGHT:
+			parse_expr();
+			code.add(OpCode.SCROLL_RIGHT);
 			break;
 		case START:
 		case END:

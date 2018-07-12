@@ -40,6 +40,7 @@ public class ByteCode {
 		GOSUB,
 		RETURN,
 		PRINT,
+		DEBUG,
 		PUSH_SUB_START,
 		PUSH_LAST_ADDRESS,
 		PUSH_DOUBLE,
@@ -73,6 +74,10 @@ public class ByteCode {
 		STICK_X,
 		STICK_Y,
 		CHARACTER,
+		SCROLL_NEXT,	// 一行上へスクロール
+		SCROLL_PREV,	// 一行下へスクロール
+		SCROLL_LEFT,	// １列左へスクロール
+		SCROLL_RIGHT,	// １列右へスクロール
 		BUTTON,
 	};
 

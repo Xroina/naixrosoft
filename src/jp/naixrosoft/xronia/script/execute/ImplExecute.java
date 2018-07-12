@@ -52,4 +52,35 @@ public interface ImplExecute {
 	 */
 	abstract String getCharacter(int x, int y);
 
+	/**
+	 * 上スクロール
+	 *
+	 * @param y1	スクロール開始位置
+	 * @param y2	スクロール終了位置
+	 */
+	abstract void scrollNext(int y1, int y2);
+
+	/**
+	 * 下スクロール
+	 *
+	 * @param y1	スクロール開始位置
+	 * @param y2	スクロール終了位置
+	 */
+	abstract void scrollPrev(int y1, int y2);
+
+	/**
+	 * 左スクロール
+	 *
+	 * @param x1	スクロール開始位置
+	 * @param x2	スクロール終了位置
+	 */
+	abstract void scrollLeft(int x1, int x2);
+
+	/**
+	 * 右スクロール
+	 *
+	 * @param x1	スクロール開始位置
+	 * @param x2	スクロール終了位置
+	 */
+	abstract void scrollRight(int x1, int x2);
 }

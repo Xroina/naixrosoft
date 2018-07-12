@@ -334,6 +334,23 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 				sp--;
 				break;
 
+			case DEBUG:
+				switch(stack.getType(sp - 1)) {
+				case INT:
+					System.err.println(String.valueOf(stack.getInt(sp - 1)));
+					break;
+				case DOUBLE:
+					System.err.println(String.valueOf(stack.getDouble(sp - 1)));
+					break;
+				case STRING:
+					System.err.println(stack.getString(sp - 1));
+					break;
+				default:
+					throw new ExecuteException("Not Support Value.");
+				}
+				sp--;
+				break;
+
 			case CLS:
 				doCls();
 				break;
@@ -348,6 +365,26 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 						getCharacter((int)stack.getInt(sp - 2),
 									 (int)stack.getInt(sp - 1)));
 				sp--;
+				break;
+
+			case SCROLL_NEXT:
+				scrollNext((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				sp -= 2;
+				break;
+
+			case SCROLL_PREV:
+				scrollPrev((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				sp -= 2;
+				break;
+
+			case SCROLL_LEFT:
+				scrollLeft((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				sp -= 2;
+				break;
+
+			case SCROLL_RIGHT:
+				scrollRight((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				sp -= 2;
 				break;
 
 			default:

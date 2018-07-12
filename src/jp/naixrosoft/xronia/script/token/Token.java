@@ -46,6 +46,7 @@ public class Token {
 		GOSUB,			// gosub
 		RETURN,			// return
 		PRINT,			// print
+		DEBUG,			// debug print
 		CONTINUE,		// continue
 		BREAK,			// break
 		CLS,			// cls
@@ -71,6 +72,10 @@ public class Token {
 		STICK_Y,		// stickY
 		BUTTON,			// button
 		CHARACTER,		// character
+		SCROLL_NEXT,	// 一行上へスクロール
+		SCROLL_PREV,	// 一行下へスクロール
+		SCROLL_LEFT,	// １列左へスクロール
+		SCROLL_RIGHT,	// １列右へスクロール
 		START,			// トークンの開始
 		END,			// トークンの終了
 	};

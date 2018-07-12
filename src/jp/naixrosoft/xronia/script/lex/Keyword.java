@@ -18,6 +18,7 @@ public class Keyword {
 		keywd.put("gosub", Kind.GOSUB);
 		keywd.put("return", Kind.RETURN);
 		keywd.put("print", Kind.PRINT);
+		keywd.put("debug", Kind.DEBUG);
 		keywd.put("continue", Kind.CONTINUE);
 		keywd.put("break", Kind.BREAK);
 		keywd.put("cls", Kind.CLS);
@@ -42,6 +43,10 @@ public class Keyword {
 		keywd.put("stickX", Kind.STICK_X);
 		keywd.put("stickY", Kind.STICK_Y);
 		keywd.put("button", Kind.BUTTON);
+		keywd.put("scrollNext", Kind.SCROLL_NEXT);
+		keywd.put("scrollPrev", Kind.SCROLL_PREV);
+		keywd.put("scrollLeft", Kind.SCROLL_LEFT);
+		keywd.put("scrollRight", Kind.SCROLL_RIGHT);
 		keywd.put("charcter", Kind.CHARACTER);
 	}
 

@@ -106,4 +106,52 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	public String getCharacter(int x, int y) {
 		return "";
 	}
+
+	/**
+	 * 上スクロール<br>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param y1	スクロール開始位置
+	 * @param y2	スクロール終了位置
+	 */
+	@Override
+	public void scrollNext(int y1, int y2) {
+		;		// 何もしない
+	}
+
+	/**
+	 * 下スクロール<br>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param y1	スクロール開始位置
+	 * @param y2	スクロール終了位置
+	 */
+	@Override
+	public void scrollPrev(int y1, int y2) {
+		;		// 何もしない
+	}
+
+	/**
+	 * 左スクロール<br>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param x1	スクロール開始位置
+	 * @param x2	スクロール終了位置
+	 */
+	@Override
+	public void scrollLeft(int x1, int x2) {
+		;		// 何もしない
+	}
+
+	/**
+	 * 右スクロール<br>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param x1	スクロール開始位置
+	 * @param x2	スクロール終了位置
+	 */
+	@Override
+	public void scrollRight(int x1, int x2) {
+		;		// 何もしない
+	}
 }
