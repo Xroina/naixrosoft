@@ -34,7 +34,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 * print 本体
 	 */
 	@Override
-	protected void doPrint(String str) {
+	public void doPrint(String str) {
 		System.out.print(str);
 	}
 
@@ -43,7 +43,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 * コマンドプロンプトでは実行できないためスタブ
 	 */
 	@Override
-	protected void doCls() {
+	public void doCls() {
 		;		// 何もしない
 	}
 
@@ -55,7 +55,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 * @param y 座標
 	 */
 	@Override
-	protected void setLocate(int x, int y) {
+	public void setLocate(int x, int y) {
 		;		// 何もしない
 	}
 
@@ -67,7 +67,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 *
 	 */
 	@Override
-	protected double getStickX() {
+	public double getStickX() {
 		return 0.0;
 	}
 
@@ -79,7 +79,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 *
 	 */
 	@Override
-	protected double getStickY() {
+	public double getStickY() {
 		return 0.0;
 	}
 
@@ -90,7 +90,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 * @return	ボタンビットマップ
 	 */
 	@Override
-	protected long getButton() {
+	public long getButton() {
 		return 0;
 	}
 
@@ -103,7 +103,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 * @return	キャラクタ文字
 	 */
 	@Override
-	protected String getCharacter(int x, int y) {
+	public String getCharacter(int x, int y) {
 		return "";
 	}
 }
