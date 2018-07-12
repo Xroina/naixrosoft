@@ -4,6 +4,8 @@ import jp.naixrosoft.xronia.script.token.Token;
 
 public class ParseException extends ScriptException {
 
+	private static final long serialVersionUID = 1L;
+
 	public ParseException(String msg) {
 		super(createMainMessage(msg));
 	}
