@@ -115,9 +115,9 @@ public class Stack {
 		if(idx < 0 || idx >= value.size())
 			throw new StackException("Stack OverFlow.");
 		if(getType(idx).equals(Type.INT)) {
-			return value.get(idx).int_var == 0;
+			return value.get(idx).int_var != 0;
 		} else if(getType(idx).equals(Type.STRING)) {
-			return value.get(idx).str_var.equals("");
+			return !value.get(idx).str_var.equals("");
 		}
 		throw new StackException("Value is not integer.");
 	}

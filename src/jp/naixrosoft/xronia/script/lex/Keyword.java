@@ -47,7 +47,7 @@ public class Keyword {
 		keywd.put("scrollPrev", Kind.SCROLL_PREV);
 		keywd.put("scrollLeft", Kind.SCROLL_LEFT);
 		keywd.put("scrollRight", Kind.SCROLL_RIGHT);
-		keywd.put("charcter", Kind.CHARACTER);
+		keywd.put("character", Kind.CHARACTER);
 	}
 
 	private Keyword() {}

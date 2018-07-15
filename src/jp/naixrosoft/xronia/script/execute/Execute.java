@@ -192,7 +192,7 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 				break;
 
 			case JUMP_IF_ZERO:
-				if(stack.getBool(sp - 1)) {
+				if(!stack.getBool(sp - 1)) {
 					pc = (int)code.getInt(pc + 1) - 1;
 				} else {
 					pc++;

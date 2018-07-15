@@ -98,8 +98,7 @@ public class Perser {
 	 * @param  expected	確認したいトークン
 	 * @throws ParseException
 	 */
-	private void check_expected_token(Kind expected)
-			throws ParseException {
+	private void check_expected_token(Kind expected) throws ParseException {
 		Token token = getToken();
 		while(token.kind == Kind.CR) {
 			token = getToken();
@@ -569,48 +568,12 @@ public class Perser {
 	}
 
 	/**
-	 * 論理ANDをパース
-	 *
-	 * @throws ParseException
-	 */
-	private void parse_and_expr() throws ParseException {
-		parse_shift_expr();
-		for(;;) {
-			Token token = getToken();
-			if(!token.kind.equals(Kind.AND2)) {
-				ungetToken(token);
-				break;
-			}
-			parse_add_expr();
-			code.add(OpCode.AND2);
-		}
-	}
-
-	/**
-	 * 論理ORをパース
-	 *
-	 * @throws ParseException
-	 */
-	private void parse_or_expr() throws ParseException {
-		parse_and_expr();
-		for(;;) {
-			Token token = getToken();
-			if(token.kind != Kind.OR2) {
-				ungetToken(token);
-				break;
-			}
-			parse_and_expr();
-			code.add(OpCode.OR2);
-		}
-	}
-
-	/**
 	 * 比較演算子をパース
 	 *
 	 * @throws ParseException
 	 */
 	private void parse_compare_expr() throws ParseException {
-		parse_or_expr();
+		parse_shift_expr();
 		for(;;) {
 			Token token = getToken();
 			if(!token.kind.equals(Kind.EQ)
@@ -622,7 +585,7 @@ public class Perser {
 				ungetToken(token);
 				break;
 			}
-			parse_or_expr();
+			parse_shift_expr();
 			switch(token.kind) {
 			case EQ:
 				code.add(OpCode.EQ);
@@ -649,12 +612,48 @@ public class Perser {
 	}
 
 	/**
+	 * 論理ANDをパース
+	 *
+	 * @throws ParseException
+	 */
+	private void parse_and_expr() throws ParseException {
+		parse_compare_expr();
+		for(;;) {
+			Token token = getToken();
+			if(!token.kind.equals(Kind.AND2)) {
+				ungetToken(token);
+				break;
+			}
+			parse_compare_expr();
+			code.add(OpCode.AND2);
+		}
+	}
+
+	/**
+	 * 論理ORをパース
+	 *
+	 * @throws ParseException
+	 */
+	private void parse_or_expr() throws ParseException {
+		parse_and_expr();
+		for(;;) {
+			Token token = getToken();
+			if(token.kind != Kind.OR2) {
+				ungetToken(token);
+				break;
+			}
+			parse_and_expr();
+			code.add(OpCode.OR2);
+		}
+	}
+
+	/**
 	 * アサイン式をパース
 	 *
 	 * @throws ParseException
 	 */
 	private void parse_assign_expr() throws ParseException {
-		parse_compare_expr();
+		parse_or_expr();
 		for(;;) {
 			Token token = getToken();
 			if(!token.kind.equals(Kind.ASSIGN) &&
@@ -666,7 +665,7 @@ public class Perser {
 			int idx;
 			switch(token.kind) {
 			case ASSIGN:
-				parse_compare_expr();
+				parse_or_expr();
 
 				token = token.prev;
 				if(!token.kind.equals(Kind.IDENT))
@@ -691,6 +690,7 @@ public class Perser {
 			}
 		}
 	}
+
 	/**
 	 * カンマをパース
 	 *
