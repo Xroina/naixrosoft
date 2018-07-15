@@ -149,6 +149,22 @@ public class LexicalAnalyzer {
 							ch = '"';
 							i++;
 							col++;
+						} else if(ch2 == 'r') {
+							ch = '\u001c';
+							i++;
+							col++;
+						} else if(ch2 == 'l') {
+							ch = '\u001d';
+							i++;
+							col++;
+						} else if(ch2 == 'u') {
+							ch = '\u001e';
+							i++;
+							col++;
+						} else if(ch2 == 'd') {
+							ch = '\u001f';
+							i++;
+							col++;
 						}
 					}
 					token.str += ch;
