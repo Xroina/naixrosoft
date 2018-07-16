@@ -37,6 +37,7 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 	 * @throws ByteCodeException
 	 */
 	protected void execute() throws ExecuteException, ByteCodeException {
+		running = true;
 
 		for(pc = 0; pc < code.size() && running; pc++) {
 
@@ -391,6 +392,9 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 				throw new ExecuteException("Not Support Operator.");
 			}
 		}
+
+		running =false;
+
 		return;
 	}
 }

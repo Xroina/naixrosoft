@@ -37,6 +37,14 @@ public abstract class BaseExecute {
 	}
 
 	/**
+	 * 実行中かを調べる
+	 *
+	 * @return	true:実行中/false:非実行
+	 */
+	public synchronized boolean runnable() {
+		return running;
+	}
+	/**
 	 * デバックプリント
 	 *
 	 * @throws ByteCodeException
