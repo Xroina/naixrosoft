@@ -16,7 +16,7 @@ public abstract class BaseExecute {
 	protected int sp = 0;
 	protected int pc = 0;
 
-	protected boolean running = true;
+	protected boolean running = false;
 
 	/**
 	 * コントラクタ
