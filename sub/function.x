@@ -2,7 +2,7 @@
 
 print "関数のテスト\n"
 
-print "" + (@0 +　@1) + "\n";
+print "" + (@0 + @1) + "\n";
 
 print "returnd\n"
 

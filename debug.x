@@ -1,9 +1,3 @@
-x=38
-y=28
-
-ch = character(x, y)
-if ch != "A" && ch != "B" {
-	print "aaa\n"
-}
+x=0xffffff
 
 print "x="+ x +"\n"

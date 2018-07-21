@@ -16,6 +16,7 @@ public class LexicalAnalyzer {
 	enum State {
 		NONE,
 		VALUE,
+		HEX,
 		IDENT,
 		STRING,
 		OPERATOR,
@@ -33,10 +34,9 @@ public class LexicalAnalyzer {
 		State state = State.NONE;
 		Token token = new Token();
 
-		for(int i = 0; i < src.length(); i++) {
-			char ch = src.charAt(i);
+		for(int i = 0; i <= src.length(); i++) {
+			char ch  = i     < src.length() ? src.charAt(i)     : 0;
 			char ch2 = i + 1 < src.length() ? src.charAt(i + 1) : 0;
-			char ch3 = i + 2 < src.length() ? src.charAt(i + 2) : 0;
 			col++;
 
 			switch(state) {
@@ -64,11 +64,11 @@ public class LexicalAnalyzer {
 					col = 0;
 					state = State.NONE;
 					token = new Token();
-				} else if(Character.isSpaceChar(ch) || ch == '\t') {	// 空白？
-					;
-				} else if(ch == '#') {					// コメント？
+				} else if(Character.isSpaceChar(ch) || ch == '\t' || ch == 0) {
+					;										// 空白？
+				} else if(ch == '#') {						// コメント？
 					state = State.COMMENT;
-				} else {								// エラー
+				} else {									// エラー
 					throw new LexicalAnalyzerException(
 							line, col, "bad character", token, ch);
 				}
@@ -77,22 +77,21 @@ public class LexicalAnalyzer {
 			case VALUE:
 				if(Character.isDigit(ch) || ch == '.') {
 					token.str += ch;
-					if(i != src.length() -1) break;
+					break;
+				} else if(token.str.equals("0") && ch == 'x') {
+					token.str = "";
+					state = State.HEX;
+					break;
 				} else if(ch == 'e' || ch == 'E') {
-					if(Character.isDigit(ch2)) {
+					if(Character.isDigit(ch2) || ch2 == '+' || ch2 == '-') {
 						token.str += ch;
 						token.str += ch2;
 						i++;
 						col++;
-						if(i != src.length() -1) break;
-					} else if((ch2 == '+' || ch2 == '-')
-							&& Character.isDigit(ch3)) {
-						token.str += ch;
-						token.str += ch2;
-						token.str += ch3;
-						i += 2;
-						col += 2;
-						if(i != src.length() -1) break;
+						break;
+					} else {
+						throw new LexicalAnalyzerException(
+								line, col, "not number format", token, ch);
 					}
 				}
 				try {
@@ -116,11 +115,33 @@ public class LexicalAnalyzer {
 				token = new Token();
 				continue;
 
+			case HEX:
+				if(Character.isDigit(ch) ||
+						ch >= 'A' && ch <= 'F' || ch >= 'a' && ch <= 'f') {
+					token.str += ch;
+					break;
+				}
+				try {
+					token.value = Long.parseLong(token.str, 16);
+					token.kind = Kind.INT_VALUE;
+				} catch(NumberFormatException e1) {
+					throw new LexicalAnalyzerException(
+							line, col, "not number format", token, ch);
+				}
+				token.line = line;
+				token.col  = col;
+				tokens.add(token);
+				i--;
+				col--;
+				state = State.NONE;
+				token = new Token();
+				continue;
+
 			case IDENT:
 				if(Character.isAlphabetic(ch)
 						|| Character.isDigit(ch) || ch == '_') {
 					token.str += ch;
-					if(i != src.length() -1) break;
+					break;
 				}
 				if(!Keyword.is(token)) token.kind = Kind.IDENT;
 				token.line = line;
@@ -136,11 +157,12 @@ public class LexicalAnalyzer {
 				if(ch != '\"') {
 					if(ch == '\n' || ch == '\r'
 						|| (ch == '\r' && ch2 == '\n')) {	// 改行？
-						if(ch2 == '\n') i++;
+						if(ch == '\r' && ch2 == '\n') i++;
 						line++;
 						col = 0;
+						ch = '\n';
 					}
-					if(ch == '\\' && i + 1 < src.length()) {
+					if(ch == '\\') {
 						if(ch2 == 'n') {
 							ch = '\n';
 							i++;
@@ -168,7 +190,7 @@ public class LexicalAnalyzer {
 						}
 					}
 					token.str += ch;
-					if(i != src.length() -1) break;
+					break;
 				}
 				token.kind = Kind.STRING_LITERAL;
 				token.line = line;
@@ -181,7 +203,7 @@ public class LexicalAnalyzer {
 			case OPERATOR:
 				if(Operator.is(token, ch)) {
 					token.str += ch;
-					if(i != src.length() -1) break;
+					break;
 				}
 				token.kind = Operator.select(token);
 				token.line = line;
@@ -196,9 +218,9 @@ public class LexicalAnalyzer {
 			case COMMENT:
 				if(ch != '\n' && ch != '\r'
 					&& (ch != '\r' || ch2 != '\n')) {	// 改行？
-					if(i != src.length() -1) break;
+					break;
 				}
-				if(ch2 == '\n') i++;
+				if(ch == '\r' && ch2 == '\n') i++;
 				token.kind = Kind.CR;
 				token.line = line;
 				token.col  = col;
@@ -208,6 +230,7 @@ public class LexicalAnalyzer {
 				state = State.NONE;
 				token = new Token();
 				continue;
+
 			default:
 				throw new LexicalAnalyzerException(
 						line, col, "bad state", token, ch);
