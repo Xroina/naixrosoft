@@ -10,14 +10,15 @@ import jp.naixrosoft.xronia.script.exception.StackException;
 import jp.naixrosoft.xronia.script.execute.Value.Type;
 
 /**
- * 実行クラス
+ * 実行変数処理クラス
  *
  * @author xronia
  *
  */
 public abstract class VariableExecute extends CalcExecute {
-
+	// 変数→スタック用マップ
 	protected Map<Integer, Integer> variable_to_stack = new HashMap<>();
+	// スタック→変数用マップ
 	protected Map<Integer, Integer> stack_to_variable = new HashMap<>();
 
 	/**

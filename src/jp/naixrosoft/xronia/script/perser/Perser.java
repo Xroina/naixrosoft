@@ -59,7 +59,7 @@ public class Perser {
 	 */
 	public Perser(Tokens t, ByteCode c, Function f,
 			Variable v, String bp, String sp) {
-		token_itr = t.begin;
+		token_itr = t.getBegin();
 		code = c;
 		variable = v;
 		function = f;
@@ -78,7 +78,7 @@ public class Perser {
 			token_itr = look_ahead;
 			look_ahead = null;
 		} else {
-			token_itr = token_itr.next;
+			token_itr = token_itr.getNext();
 		}
 		return token_itr;
 	}
@@ -100,10 +100,10 @@ public class Perser {
 	 */
 	private void check_expected_token(Kind expected) throws ParseException {
 		Token token = getToken();
-		while(token.kind == Kind.CR) {
+		while(token.getKind() == Kind.CR) {
 			token = getToken();
 		}
-		if(token.kind != expected) {
+		if(token.getKind() != expected) {
 			throw new ParseException(
 					"parse error:Expected " + String.valueOf(expected), token);
 		}
@@ -120,17 +120,17 @@ public class Perser {
 		Token token;
 		do {
 			token = getToken();
-			if(token.kind != Kind.IDENT)
+			if(token.getKind() != Kind.IDENT)
 				throw new ParseException("bad statement", token);
 
 			token = getToken();
-		} while(token.kind == Kind.COLON);
+		} while(token.getKind() == Kind.COLON);
 
 		ungetToken(token);
 
 		// 関数ファイルの生成
 		StringBuffer sb = new StringBuffer();
-		switch(this_token.kind) {
+		switch(this_token.getKind()) {
 		case COLON:
 			sb.append(src_path);
 			break;
@@ -142,13 +142,13 @@ public class Perser {
 		}
 		sb.append(File.separator);
 
-		for(Token t = this_token.next; t != token; t = t.next) {
-			switch(t.kind) {
+		for(Token t = this_token.getNext(); t != token; t = t.getNext()) {
+			switch(t.getKind()) {
 			case COLON:
 				sb.append(File.separator);
 				break;
 			case IDENT:
-				sb.append(t.str);
+				sb.append(t.getString());
 				break;
 			default:
 				throw new ParseException("kind not found.", t);
@@ -198,24 +198,24 @@ public class Perser {
 	private void parse_primary_expr() throws ParseException {
 		int idx = 0;
 		Token token = getToken();
-		while(token.kind == Kind.CR) {
+		while(token.getKind() == Kind.CR) {
 			token = getToken();
 		}
 
-		switch(token.kind) {
+		switch(token.getKind()) {
 		case INT_VALUE:
 			code.add(OpCode.PUSH_INT);
-			code.add(token.value);
+			code.add(token.getValue());
 			break;
 
 		case DOUBLE_VALUE:
 			code.add(OpCode.PUSH_DOUBLE);
-			code.add(token.dbl);
+			code.add(token.getDouble());
 			break;
 
 		case STRING_LITERAL:
 			code.add(OpCode.PUSH_STRING);
-			code.add(token.str);
+			code.add(token.getString());
 			break;
 
 		case LEFT_PAREN:
@@ -229,9 +229,9 @@ public class Perser {
 			break;
 
 		case IDENT:
-			idx = variable.search(token.str);
+			idx = variable.search(token.getString());
 			if (idx >= variable.size()) {
-				idx = variable.newVar(token.str);
+				idx = variable.newVar(token.getString());
 				code.add(OpCode.PUSH_INT);
 				code.add(0);
 				code.add(OpCode.ASSIGN);
@@ -382,7 +382,7 @@ public class Perser {
 		default:
 			throw new ParseException("kind not found.", token);
 		}
-		while(token.next.kind == Kind.CR) {
+		while(token.getNext().getKind() == Kind.CR) {
 			token = getToken();
 		}
 	}
@@ -425,7 +425,7 @@ public class Perser {
 			throws ParseException {
 		int idx = variable.search(ident);
 
-		parse_incdec_expr(token, token.kind, idx);
+		parse_incdec_expr(token, token.getKind(), idx);
 	}
 
 	/**
@@ -436,10 +436,10 @@ public class Perser {
 	private void parse_incdec_expr(Kind kind) throws ParseException {
 
 		Token token = getToken();
-		if(!token.kind.equals(Kind.IDENT))
+		if(!token.getKind().equals(Kind.IDENT))
 			throw new ParseException("bad statement.", token);
 
-		int idx = variable.search(token.str);
+		int idx = variable.search(token.getString());
 
 		parse_incdec_expr(token, kind, idx);
 	}
@@ -451,7 +451,7 @@ public class Perser {
 	 */
 	private void parse_unary_expr() throws ParseException {
 		Token token = getToken();
-		switch(token.kind) {
+		switch(token.getKind()) {
 		case SUB:
 			parse_primary_expr();
 			code.add(OpCode.MINUS);
@@ -462,7 +462,7 @@ public class Perser {
 			break;
 		case INC:
 		case DEC:
-			parse_incdec_expr(token.kind);
+			parse_incdec_expr(token.getKind());
 			break;
 		default:
 			ungetToken(token);
@@ -480,15 +480,15 @@ public class Perser {
 		parse_unary_expr();
 		for(;;) {
 			Token token = getToken();
-			if(!token.kind.equals(Kind.MUL)
-			&& !token.kind.equals(Kind.DIV)
-			&& !token.kind.equals(Kind.REMAIND)
-			&& !token.kind.equals(Kind.AND)) {
+			if(!token.getKind().equals(Kind.MUL)
+			&& !token.getKind().equals(Kind.DIV)
+			&& !token.getKind().equals(Kind.REMAIND)
+			&& !token.getKind().equals(Kind.AND)) {
 				ungetToken(token);
 				break;
 			}
 			parse_unary_expr();
-			switch(token.kind){
+			switch(token.getKind()){
 			case MUL:
 				code.add(OpCode.MUL);
 				break;
@@ -516,14 +516,14 @@ public class Perser {
 		parse_mult_expr();
 		for(;;) {
 			Token token = getToken();
-			if(!token.kind.equals(Kind.ADD)
-			&& !token.kind.equals(Kind.SUB)
-			&& !token.kind.equals(Kind.OR)) {
+			if(!token.getKind().equals(Kind.ADD)
+			&& !token.getKind().equals(Kind.SUB)
+			&& !token.getKind().equals(Kind.OR)) {
 				ungetToken(token);
 				break;
 			}
 			parse_mult_expr();
-			switch(token.kind) {
+			switch(token.getKind()) {
 			case ADD:
 				code.add(OpCode.ADD);
 				break;
@@ -548,13 +548,13 @@ public class Perser {
 		parse_add_expr();
 		for(;;) {
 			Token token = getToken();
-			if(token.kind != Kind.LEFT_SHIFT
-			&& token.kind != Kind.RIGHT_SHIFT) {
+			if(token.getKind() != Kind.LEFT_SHIFT
+			&& token.getKind() != Kind.RIGHT_SHIFT) {
 				ungetToken(token);
 				break;
 			}
 			parse_add_expr();
-			switch(token.kind) {
+			switch(token.getKind()) {
 			case LEFT_SHIFT:
 				code.add(OpCode.LEFT_SHIFT);
 				break;
@@ -576,17 +576,17 @@ public class Perser {
 		parse_shift_expr();
 		for(;;) {
 			Token token = getToken();
-			if(!token.kind.equals(Kind.EQ)
-			&& !token.kind.equals(Kind.NE)
-			&& !token.kind.equals(Kind.GT)
-			&& !token.kind.equals(Kind.GE)
-			&& !token.kind.equals(Kind.LT)
-			&& !token.kind.equals(Kind.LE)) {
+			if(!token.getKind().equals(Kind.EQ)
+			&& !token.getKind().equals(Kind.NE)
+			&& !token.getKind().equals(Kind.GT)
+			&& !token.getKind().equals(Kind.GE)
+			&& !token.getKind().equals(Kind.LT)
+			&& !token.getKind().equals(Kind.LE)) {
 				ungetToken(token);
 				break;
 			}
 			parse_shift_expr();
-			switch(token.kind) {
+			switch(token.getKind()) {
 			case EQ:
 				code.add(OpCode.EQ);
 				break;
@@ -620,7 +620,7 @@ public class Perser {
 		parse_compare_expr();
 		for(;;) {
 			Token token = getToken();
-			if(!token.kind.equals(Kind.AND2)) {
+			if(!token.getKind().equals(Kind.AND2)) {
 				ungetToken(token);
 				break;
 			}
@@ -638,7 +638,7 @@ public class Perser {
 		parse_and_expr();
 		for(;;) {
 			Token token = getToken();
-			if(token.kind != Kind.OR2) {
+			if(token.getKind() != Kind.OR2) {
 				ungetToken(token);
 				break;
 			}
@@ -656,22 +656,22 @@ public class Perser {
 		parse_or_expr();
 		for(;;) {
 			Token token = getToken();
-			if(!token.kind.equals(Kind.ASSIGN) &&
-			   !token.kind.equals(Kind.INC) &&
-			   !token.kind.equals(Kind.DEC)) {
+			if(!token.getKind().equals(Kind.ASSIGN) &&
+			   !token.getKind().equals(Kind.INC) &&
+			   !token.getKind().equals(Kind.DEC)) {
 				ungetToken(token);
 				break;
 			}
 			int idx;
-			switch(token.kind) {
+			switch(token.getKind()) {
 			case ASSIGN:
 				parse_or_expr();
 
-				token = token.prev;
-				if(!token.kind.equals(Kind.IDENT))
+				token = token.getPrev();
+				if(!token.getKind().equals(Kind.IDENT))
 					throw new ParseException("bad statement", token);
 
-				idx = variable.search_or_new(token.str);
+				idx = variable.search_or_new(token.getString());
 
 				code.add(OpCode.ASSIGN);
 				code.add(idx);
@@ -679,10 +679,10 @@ public class Perser {
 
 			case INC:
 			case DEC:
-				if(!token.prev.kind.equals(Kind.IDENT))
+				if(!token.getPrev().getKind().equals(Kind.IDENT))
 					throw new ParseException("bad statement", token);
 
-				parse_incdec_expr(token.prev.str, token);
+				parse_incdec_expr(token.getPrev().getString(), token);
 				break;
 
 			default:
@@ -700,7 +700,7 @@ public class Perser {
 		parse_assign_expr();
 		for(;;) {
 			Token token = getToken();
-			if(token.kind != Kind.COMMA) {
+			if(token.getKind() != Kind.COMMA) {
 				ungetToken(token);
 				break;
 			}
@@ -733,15 +733,15 @@ public class Perser {
 		parse_block();									// 式のあとにはブロックがあるはず
 
 		Token token = getToken();
-		if(token.kind.equals(Kind.EF)) {			// efがある
+		if(token.getKind().equals(Kind.EF)) {			// efがある
 
 			label.set(else_label);						// if文の終わり
 			parse_if_stmt();
 
-		} else if(token.kind.equals(Kind.ELSE)) {	// elseがあるか？
+		} else if(token.getKind().equals(Kind.ELSE)) {	// elseがあるか？
 
 			Token token2 = getToken();
-			if(token2.kind.equals(Kind.IF)) {		// elseのあとはifだったりする
+			if(token2.getKind().equals(Kind.IF)) {		// elseのあとはifだったりする
 
 				label.set(else_label);					// if文の終わり
 				parse_if_stmt();
@@ -780,7 +780,7 @@ public class Perser {
 
 		Token token = getToken();			// カッコの処理
 		boolean paren = false;
-		if(token.kind.equals(Kind.LEFT_PAREN)) {
+		if(token.getKind().equals(Kind.LEFT_PAREN)) {
 			paren = true;
 		} else {
 			ungetToken(token);
@@ -790,7 +790,7 @@ public class Perser {
 
 		// セミコロンを読み飛ばす
 		token = getToken();
-		if(!token.kind.equals(Kind.SEMICOLON))
+		if(!token.getKind().equals(Kind.SEMICOLON))
 			ungetToken(token);
 
 		label.set(start_label);				// for開始ラベル設定
@@ -799,7 +799,7 @@ public class Perser {
 
 		// セミコロンを読み飛ばす
 		token = getToken();
-		if(!token.kind.equals(Kind.SEMICOLON))
+		if(!token.getKind().equals(Kind.SEMICOLON))
 			ungetToken(token);
 
 		LoopLabel lpl = new LoopLabel(loop_label, end_loop_label);
@@ -876,8 +876,8 @@ public class Perser {
 		Token token = getToken();
 		int level = 1;
 		// break/continue の次は数か何もないはず
-		if(token.kind.equals(Kind.INT_VALUE)) {
-			level = (int) token.value;
+		if(token.getKind().equals(Kind.INT_VALUE)) {
+			level = (int) token.getValue();
 		} else {
 			ungetToken(token);
 		}
@@ -913,10 +913,10 @@ public class Perser {
 
 		Token token = getToken();
 
-		if(!token.kind.equals(Kind.IDENT))
+		if(!token.getKind().equals(Kind.IDENT))
 			throw new ParseException("label identifier expected.", token);
 
-		int lbl = label.search_or_new(token.str);
+		int lbl = label.search_or_new(token.getString());
 
 		switch(kind) {
 		case GOTO:
@@ -940,10 +940,10 @@ public class Perser {
 	private void parse_label_stmt() throws ParseException {
 		Token token = getToken();
 
-		if(!token.kind.equals(Kind.IDENT))
+		if(!token.getKind().equals(Kind.IDENT))
 			throw new ParseException("label identifier expected.", token);
 
-		int lbl = label.search_or_new(token.str);
+		int lbl = label.search_or_new(token.getString());
 		label.set(lbl);
 	}
 
@@ -954,7 +954,7 @@ public class Perser {
 	 */
 	private void parse_return_stmt() throws ParseException {
 		Token token = getToken();
-		if(token.kind != Kind.CR && token.kind != Kind.SEMICOLON) {
+		if(token.getKind() != Kind.CR && token.getKind() != Kind.SEMICOLON) {
 			ungetToken(token);
 			parse_expr();
 		} else {
@@ -972,7 +972,7 @@ public class Perser {
 	private void parse_stmt() throws ParseException {
 		Token token = getToken();
 
-		switch(token.kind) {
+		switch(token.getKind()) {
 		case IF:
 			parse_if_stmt();
 			break;
@@ -992,14 +992,14 @@ public class Perser {
 			break;
 		case GOTO:
 		case GOSUB:
-			parse_goto_gosub_stmt(token.kind);
+			parse_goto_gosub_stmt(token.getKind());
 			break;
 		case RETURN:
 			parse_return_stmt();
 			break;
 		case BREAK:
 		case CONTINUE:
-			parse_break_continue_stmt(token.kind);
+			parse_break_continue_stmt(token.getKind());
 			break;
 		case MUL:
 			parse_label_stmt();
@@ -1050,7 +1050,7 @@ public class Perser {
 		for(;;) {
 			Token token = getToken();
 
-			if(token.kind.equals(Kind.RIGHT_BRACE)) break;
+			if(token.getKind().equals(Kind.RIGHT_BRACE)) break;
 
 			ungetToken(token);
 
@@ -1068,7 +1068,7 @@ public class Perser {
 		for (;;) {
 			Token token = getToken();
 
-			if(token.kind.equals(Kind.END)) break;
+			if(token.getKind().equals(Kind.END)) break;
 
 			ungetToken(token);
 

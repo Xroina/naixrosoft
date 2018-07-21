@@ -63,7 +63,7 @@ public class Operator {
 	 * @return		true:演算子		false:演算子でない
 	 */
 	public static boolean is(Token token, char letter) {
-		return oper.containsKey(token.str + letter);
+		return oper.containsKey(token.getString() + letter);
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Operator {
 	 * @return		演算子の種別
 	 */
 	public static Kind select(Token token){
-		Kind kind = oper.get(token.str);
+		Kind kind = oper.get(token.getString());
 		if(kind == null) return Kind.NONE;
 		return kind;
 	}

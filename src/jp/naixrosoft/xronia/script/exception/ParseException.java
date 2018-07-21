@@ -12,7 +12,8 @@ public class ParseException extends ScriptException {
 
 	public ParseException(String msg, Token token) {
 		super(createLineColums(token) + createMainMessage(msg) +
-				" Token:" + token.str + " Kind:"+ String.valueOf(token.kind));
+				" Token:" + token.getString() +
+				" Kind:"+ String.valueOf(token.getKind()));
 	}
 
 	public ParseException(String msg, Token fast, Token last) {
@@ -22,15 +23,15 @@ public class ParseException extends ScriptException {
 	static private String createMessage(String msg, Token fast, Token last) {
 		String str = createLineColums(fast) + createMainMessage(msg) +
 				" Token:";
-		for(Token t = fast; t != last; t = t.next) {
-			str += t.str;
+		for(Token t = fast; t != last; t = t.getNext()) {
+			str += t.getString();
 		}
 		return str;
 	}
 
 	static private String createLineColums(Token token) {
-		return String.valueOf(token.line) + "," +
-				String.valueOf(token.col) + " ";
+		return String.valueOf(token.getLine()) + "," +
+				String.valueOf(token.getColumn()) + " ";
 	}
 
 	static private String createMainMessage(String msg) {

@@ -1,5 +1,11 @@
 package jp.naixrosoft.xronia.script.execute;
 
+/**
+ * 実行本体用インターフェース
+ *
+ * @author xronia
+ *
+ */
 public interface ImplExecute {
 
 	/**

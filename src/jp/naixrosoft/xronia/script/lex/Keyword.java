@@ -72,9 +72,9 @@ public final class Keyword {
 	 * @return		true:キーワード		false:キーワードでない
 	 */
 	public static boolean is(Token token) {
-		Kind kind = keywd.get(token.str);
+		Kind kind = keywd.get(token.getString());
 		if(kind == null) return false;;
-		token.kind = kind;
+		token.setKind(kind);
 		return true;
 	}
 

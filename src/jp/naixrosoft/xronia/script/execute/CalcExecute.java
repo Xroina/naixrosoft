@@ -7,7 +7,7 @@ import jp.naixrosoft.xronia.script.exception.StackException;
 import jp.naixrosoft.xronia.script.execute.Value.Type;
 
 /**
- * 実行クラス
+ * 実行計算クラス
  *
  * @author xronia
  *

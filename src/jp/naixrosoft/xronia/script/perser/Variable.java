@@ -92,11 +92,22 @@ public class Variable {
 	}
 
 	/**
+	 * toStringメソッド
+	 */
+	@Override
+	public String toString() {
+		StringBuffer s = new StringBuffer(super.toString());
+		s.append(" Variable:");
+		for(String i : variable) s.append(i).append(" ");
+		s.append(":End");
+
+		return s.toString();
+	}
+
+	/**
 	 * デバックプリント
 	 */
 	public void debug() {
-		System.out.print("Variable:");
-		for(String i : variable) System.out.print(i + " ");
-		System.out.println(":End Variable");
+		System.out.print(this.toString());
 	}
 }

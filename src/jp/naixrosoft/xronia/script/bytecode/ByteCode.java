@@ -84,9 +84,9 @@ public class ByteCode {
 	private static OpCode[] enums = OpCode.values();	// オペコードの配列
 
 	private class Code {
-		public long   int_var;
-		public double dbl_var;
-		public String str_var;
+		private long   int_var;
+		private double dbl_var;
+		private String str_var;
 
 		public Code(long var) {
 			int_var = var;
@@ -112,56 +112,124 @@ public class ByteCode {
 	public ByteCode() {
 		code = new ArrayList<>();
 	}
+
+	/**
+	 * バイトコードに値追加
+	 *
+	 * @param var	値
+	 */
 	public void add(Code var) {
 		code.add(var);
 	}
 
+	/**
+	 * バイトコードに値(整数)追加
+	 *
+	 * @param var	値(整数)
+	 */
 	public void add(long var) {
 		code.add(new Code(var));
 	}
 
+	/**
+	 * バイトコードに値(実数)追加
+	 *
+	 * @param var	値(実数)
+	 */
 	public void add(double var) {
 		code.add(new Code(var));
 	}
 
+	/**
+	 * バイトコードに値(文字列)追加
+	 *
+	 * @param var	値(文字列)
+	 */
 	public void add(String var) {
 		code.add(new Code(var));
 	}
 
+	/**
+	 * バイトコードにコード追加
+	 *
+	 * @param c		コード
+	 */
 	public void add(OpCode c) {
 		add((long)c.ordinal());
 	}
 
+	/**
+	 * バイトコードから値取得
+	 *
+	 * @param pc	プログラムポインタ
+	 * @return		値
+	 * @throws ByteCodeException
+	 */
 	public Code get(int pc) throws ByteCodeException {
 		if(pc < 0 || pc >= code.size())
 			throw new ByteCodeException("Code Buffer OverFlow.");
 		return code.get(pc);
 	}
 
+	/**
+	 * バイトコードから値(整数)取得
+	 *
+	 * @param pc	プログラムポインタ
+	 * @return		値(整数)
+	 * @throws ByteCodeException
+	 */
 	public long getInt(int pc) throws ByteCodeException {
 		if(pc < 0 || pc >= code.size())
 			throw new ByteCodeException("Code Buffer OverFlow.");
 		return code.get(pc).int_var;
 	}
 
+	/**
+	 * バイトコードから値(実数)取得
+	 *
+	 * @param pc	プログラムポインタ
+	 * @return		値(実数)
+	 * @throws ByteCodeException
+	 */
 	public double getDouble(int pc) throws ByteCodeException {
 		if(pc < 0 || pc >= code.size())
 			throw new ByteCodeException("Code Buffer OverFlow.");
 		return code.get(pc).dbl_var;
 	}
 
+	/**
+	 * バイトコードから値(文字列)取得
+	 *
+	 * @param pc	プログラムポインタ
+	 * @return		値(文字列)
+	 * @throws ByteCodeException
+	 */
 	public String getString(int pc) throws ByteCodeException {
 		if(pc < 0 || pc >= code.size())
 			throw new ByteCodeException("Code Buffer OverFlow.");
 		return code.get(pc).str_var;
 	}
 
+	/**
+	 * バイトコードからコード取得
+	 *
+	 * @param pc	プログラムポインタ
+	 * @return		コード
+	 * @throws ByteCodeException
+	 */
 	public OpCode getOpCode(int pc) throws ByteCodeException {
 		if(pc < 0 || pc >= code.size())
 			throw new ByteCodeException("Code Buffer OverFlow.");
 		return enums[(int)getInt(pc)];
 	}
 
+	/**
+	 * プログラムポインタを指定して値(整数)を設定
+	 *
+	 * @param pc	プログラムポインタ
+	 * @param var	値(整数)
+	 * @throws ByteCodeException
+	 */
 	public void setInt(int pc, long var) throws ByteCodeException {
 		if(pc < 0 || pc >= code.size())
 			throw new ByteCodeException("Code Buffer OverFlow.");
@@ -170,41 +238,67 @@ public class ByteCode {
 		code.set(pc, c);
 	}
 
+	/**
+	 * バイトコードサイズ取得
+	 *
+	 * @return	バイトコードサイズ
+	 */
 	public int size() {
 		return code.size();
 	}
 
-	public void debug() throws ByteCodeException {
-		System.out.println("ByteCode:");
+	/**
+	 * toStringメソッド
+	 */
+	@Override
+	public String toString() {
+		StringBuffer s = new StringBuffer(super.toString());
+
+		s.append(" ByteCode:\n");
 		for(int i = 0; i < code.size(); i++) {
-			OpCode opcode = getOpCode(i);
-			System.out.print(String.valueOf(i) + ":" + opcode);
-			switch(opcode) {
-			case PUSH_STRING:
-				i++;
-				System.out.print(" " + getString(i));
-				break;
+			try {
+				OpCode opcode = getOpCode(i);
+				s.append(String.valueOf(i) + ":" + opcode);
+				switch(opcode) {
+				case PUSH_STRING:
+					i++;
+					s.append(" " + getString(i));
+					break;
 
-			case PUSH_DOUBLE:
-				i++;
-				System.out.print(" " + String.valueOf(getDouble(i)));
-				break;
+				case PUSH_DOUBLE:
+					i++;
+					s.append(" " + String.valueOf(getDouble(i)));
+					break;
 
-			case PUSH_INT:
-			case PUSH_VAR:
-			case ASSIGN:
-			case JUMP:
-			case JUMP_IF_ZERO:
-			case GOSUB:
-				i++;
-				System.out.print(" " + String.valueOf(getInt(i)));
-				break;
+				case PUSH_INT:
+				case PUSH_VAR:
+				case ASSIGN:
+				case JUMP:
+				case JUMP_IF_ZERO:
+				case GOSUB:
+					i++;
+					s.append(" " + String.valueOf(getInt(i)));
+					break;
 
-			default:
-				break;
+				default:
+					break;
+				}
+			}catch(ByteCodeException e) {
+				s.append(e.toString());
 			}
-			System.out.println("");
+			s.append("\n");
 		}
-		System.out.println(":End ByteCode");
+		s.append(":End");
+
+		return s.toString();
+	}
+
+	/**
+	 * デバックプリント
+	 *
+	 * @throws ByteCodeException
+	 */
+	public void debug() {
+		System.out.println(this.toString());
 	}
 }

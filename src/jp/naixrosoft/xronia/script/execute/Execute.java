@@ -17,9 +17,9 @@ import jp.naixrosoft.xronia.script.execute.Value.Type;
  */
 public abstract class Execute extends VariableExecute implements ImplExecute {
 
-	protected Random rnd = new Random();
+	protected Random rnd = new Random();				// 乱数
 	protected static final LocalDateTime baseTime =
-			LocalDateTime.of(2000, 1, 1, 0, 0, 0);
+			LocalDateTime.of(2000, 1, 1, 0, 0, 0);		// 時刻型のベース
 
 	/**
 	 * コントラクタ
@@ -290,7 +290,8 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 
 			case SIG:
 				if(stack.getType(sp - 1).equals(Type.INT)) {
-					stack.set(sp - 1, (int)Math.signum((double)stack.getInt(sp - 1)));
+					stack.set(sp - 1,
+							(int)Math.signum((double)stack.getInt(sp - 1)));
 				} else
 				if(stack.getType(sp - 1).equals(Type.DOUBLE)) {
 					stack.set(sp - 1, Math.signum(stack.getDouble(sp - 1)));
@@ -369,22 +370,26 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 				break;
 
 			case SCROLL_NEXT:
-				scrollNext((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				scrollNext( (int)stack.getInt(sp - 2),
+							(int)stack.getInt(sp - 1));
 				sp -= 2;
 				break;
 
 			case SCROLL_PREV:
-				scrollPrev((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				scrollPrev( (int)stack.getInt(sp - 2),
+							(int)stack.getInt(sp - 1));
 				sp -= 2;
 				break;
 
 			case SCROLL_LEFT:
-				scrollLeft((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				scrollLeft( (int)stack.getInt(sp - 2),
+							(int)stack.getInt(sp - 1));
 				sp -= 2;
 				break;
 
 			case SCROLL_RIGHT:
-				scrollRight((int)stack.getInt(sp - 2), (int)stack.getInt(sp - 1));
+				scrollRight((int)stack.getInt(sp - 2),
+							(int)stack.getInt(sp - 1));
 				sp -= 2;
 				break;
 

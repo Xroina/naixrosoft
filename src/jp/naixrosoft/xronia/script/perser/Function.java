@@ -96,4 +96,16 @@ public class Function {
 	public void setAddress(int label, int address) {
 		label_address_map.put(label, address);
 	}
+
+	/**
+	 * toStringメソッド
+	 */
+	@Override
+	public String toString() {
+		StringBuffer s = new StringBuffer(super.toString());
+		s.append(" function_label_map:").append(function_label_map.toString());
+		s.append(" label_address_map:").append(label_address_map.toString());
+
+		return s.toString();
+	}
 }

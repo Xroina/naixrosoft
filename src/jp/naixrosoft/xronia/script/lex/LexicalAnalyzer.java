@@ -69,16 +69,16 @@ public class LexicalAnalyzer {
 			switch(state) {
 			case NONE:				// ステータスなし
 				if(Character.isDigit(ch) || ch == '.') {	// 数字？
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					state = State.VALUE;
 				} else if(Character.isAlphabetic(ch) || ch == '_'
 						|| ch == '$' || ch == '@') {		// 英文字？
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					state = State.IDENT;
 				} else if(ch == '\"') {						// 文字列？
 					state = State.STRING;
 				} else if(Operator.is(token, ch)) {			// 演算子？
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					state = State.OPERATOR;
 				} else if(isCr(ch, ch2)) {					// 改行？
 					addCr(token);
@@ -97,19 +97,19 @@ public class LexicalAnalyzer {
 			case VALUE:				// 数値の解析
 				if(Character.isDigit(ch) || ch == '.') {
 					// 数または小数点ならトークンに追加して次の文字解析
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					break;
-				} else if(token.str.equals("0") && ch == 'x') {
+				} else if(token.getString().equals("0") && ch == 'x') {
 					// 0xで始まる場合は16進数解析へ遷移
-					token.str = "";
+					token.setString("");
 					state = State.HEX;
 					break;
 				} else if(ch == 'e' || ch == 'E') {
 					// 指数表記
 					if(Character.isDigit(ch2) || ch2 == '+' || ch2 == '-') {
 						// 指数の場合は次の文字は数字か±
-						token.str += ch;
-						token.str += ch2;
+						token.setString(token.getString() + ch);
+						token.setString(token.getString() + ch2);
 						index++;
 						col++;
 						break;
@@ -120,13 +120,13 @@ public class LexicalAnalyzer {
 					}
 				}
 				try {		// Longにパース成功すればトークンは整数型
-					token.value = Long.parseLong(token.str);
-					token.kind = Kind.INT_VALUE;
+					token.setValue(Long.parseLong(token.getString()));
+					token.setKind(Kind.INT_VALUE);
 				} catch(NumberFormatException e1) {
 					// Longにパース失敗
 					try {	// Doubleにパース成功すればトークンは実数型
-						token.dbl = Double.parseDouble(token.str);
-						token.kind = Kind.DOUBLE_VALUE;
+						token.setDouble(Double.parseDouble(token.getString()));
+						token.setKind(Kind.DOUBLE_VALUE);
 					} catch(NumberFormatException e2) {
 						// LongにもDoubleにもパース失敗した場合はエラー
 						throw new LexicalAnalyzerException(
@@ -141,12 +141,12 @@ public class LexicalAnalyzer {
 			case HEX:				// 16進数の解析
 				if(Character.isDigit(ch) ||
 						ch >= 'A' && ch <= 'F' || ch >= 'a' && ch <= 'f') {
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					break;
 				}
 				try {
-					token.value = Long.parseLong(token.str, 16);
-					token.kind = Kind.INT_VALUE;
+					token.setValue(Long.parseLong(token.getString(), 16));
+					token.setKind(Kind.INT_VALUE);
 				} catch(NumberFormatException e1) {
 					throw new LexicalAnalyzerException(
 							line, col, "not number format", token, ch);
@@ -159,10 +159,10 @@ public class LexicalAnalyzer {
 			case IDENT:				// 文字式の解析
 				if(Character.isAlphabetic(ch)
 						|| Character.isDigit(ch) || ch == '_') {
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					break;
 				}
-				if(!Keyword.is(token)) token.kind = Kind.IDENT;
+				if(!Keyword.is(token)) token.setKind(Kind.IDENT);
 				addTokenAndUnprChar(token);
 				state = State.NONE;
 				token = new Token();
@@ -175,12 +175,12 @@ public class LexicalAnalyzer {
 						col = 0;
 						ch = '\n';
 					}
-					token.str += escSqens(ch, ch2);
+					token.setString(token.getString() + escSqens(ch, ch2));
 					break;
 				}
-				token.kind = Kind.STRING_LITERAL;
-				token.line = line;
-				token.col  = col;
+				token.setKind(Kind.STRING_LITERAL);
+				token.setLine(line);
+				token.setColumn(col);
 				tokens.add(token);
 				state = State.NONE;
 				token = new Token();
@@ -188,10 +188,10 @@ public class LexicalAnalyzer {
 
 			case OPERATOR:			// 演算子の解析
 				if(Operator.is(token, ch)) {
-					token.str += ch;
+					token.setString(token.getString() + ch);
 					break;
 				}
-				token.kind = Operator.select(token);
+				token.setKind(Operator.select(token));
 				addTokenAndUnprChar(token);
 				state = State.NONE;
 				token = new Token();
@@ -221,8 +221,8 @@ public class LexicalAnalyzer {
 	 * @param token	登録するトークン
 	 */
 	private void addTokenAndUnprChar(Token token) {
-		token.line = line;
-		token.col  = col;
+		token.setLine(line);
+		token.setColumn(col);
 		tokens.add(token);
 		index--;
 		col--;
@@ -250,9 +250,9 @@ public class LexicalAnalyzer {
 	 * @param token
 	 */
 	private void addCr(Token token) {
-		token.kind = Kind.CR;
-		token.line = line;
-		token.col  = col;
+		token.setKind(Kind.CR);
+		token.setLine(line);
+		token.setColumn(col);
 		tokens.add(token);
 		line++;
 		col = 0;

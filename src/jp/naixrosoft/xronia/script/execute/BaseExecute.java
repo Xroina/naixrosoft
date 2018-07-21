@@ -2,21 +2,20 @@ package jp.naixrosoft.xronia.script.execute;
 
 import jp.naixrosoft.xronia.script.bytecode.ByteCode;
 import jp.naixrosoft.xronia.script.exception.ByteCodeException;
-import jp.naixrosoft.xronia.script.exception.StackException;
 
 /**
- * 実行クラス
+ * 実行基本クラス
  *
  * @author xronia
  *
  */
 public abstract class BaseExecute {
-	protected final ByteCode code;
-	protected Stack stack = new Stack();
-	protected int sp = 0;
-	protected int pc = 0;
+	protected final ByteCode code;			// バイトコード
+	protected Stack stack = new Stack();	// スタック
+	protected int sp = 0;					// スタックポインタ
+	protected int pc = 0;					// プログラムポインタ
 
-	protected boolean running = false;
+	protected boolean running = false;		// 実施中フラグ
 
 	/**
 	 * コントラクタ
@@ -44,38 +43,31 @@ public abstract class BaseExecute {
 	public synchronized boolean runnable() {
 		return running;
 	}
+
+	/**
+	 * toStringメソッド
+	 */
+	@Override
+	public String toString() {
+		StringBuffer s = new StringBuffer(super.toString());
+		s.append(" pc:").append(String.valueOf(pc));
+		s.append(" sp:").append(String.valueOf(sp)).append(" code:");
+		try {
+			s.append(code.getOpCode(pc));
+		} catch (ByteCodeException e) {
+			s.append(e.toString());
+		}
+		s.append("\n");
+		s.append(stack.toString());
+
+		return s.toString();
+	}
+
 	/**
 	 * デバックプリント
-	 *
-	 * @throws ByteCodeException
-	 * @throws StackException
 	 */
-	public void debug() throws ByteCodeException, StackException {
-		System.out.println("pc:" + String.valueOf(pc) +
-				" sp:" + String.valueOf(sp) +
-				" code:" + code.getOpCode(pc));
-		System.out.println("Stack:");
-		for(int i = 0; i < stack.size(); i++) {
-			System.out.print(String.valueOf(i) + ":");
-			switch(stack.getType(i)) {
-			case INT:
-				System.out.print(String.valueOf(stack.getInt(i)));
-				break;
-			case DOUBLE:
-				System.out.print(String.valueOf(stack.getDouble(i)));
-				break;
-			case STRING:
-				System.out.print(stack.getString(i));
-				break;
-			case ADDRESS:
-				System.out.print(stack.getAddress(i));
-				break;
-			default:
-				break;
-			}
-			System.out.println("(" + stack.getType(i) + ")");
-		}
-		System.out.println(": End Stack");
+	public void debug() {
+		System.out.println(this.toString());
 	}
 
 }
