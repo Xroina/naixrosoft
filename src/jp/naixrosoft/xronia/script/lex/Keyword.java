@@ -6,7 +6,16 @@ import java.util.Map;
 import jp.naixrosoft.xronia.script.token.Token;
 import jp.naixrosoft.xronia.script.token.Token.Kind;
 
-public class Keyword {
+/**
+ * キーワードクラス
+ *
+ * @author xronia
+ *
+ */
+public final class Keyword {
+	/**
+	 * 識別するキーワード
+	 */
 	private static final Map<String, Kind> keywd = new HashMap<>();
 	static {
 		keywd.put("if", Kind.IF);
@@ -50,8 +59,18 @@ public class Keyword {
 		keywd.put("character", Kind.CHARACTER);
 	}
 
+	/**
+	 * コンストラクタ<br>
+	 * 実体化不可
+	 */
 	private Keyword() {}
 
+	/**
+	 * トークンがキーワードかを調査しキーワードだったら種別をキーワードがさす値に変更
+	 *
+	 * @param token	調査するトークン
+	 * @return		true:キーワード		false:キーワードでない
+	 */
 	public static boolean is(Token token) {
 		Kind kind = keywd.get(token.str);
 		if(kind == null) return false;;

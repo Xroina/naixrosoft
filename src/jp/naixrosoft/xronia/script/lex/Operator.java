@@ -6,7 +6,16 @@ import java.util.Map;
 import jp.naixrosoft.xronia.script.token.Token;
 import jp.naixrosoft.xronia.script.token.Token.Kind;
 
+/**
+ * 演算子クラス
+ *
+ * @author xronia
+ *
+ */
 public class Operator {
+	/**
+	 * 識別する演算子
+	 */
 	private static Map<String, Kind> oper = new HashMap<String, Kind>();
 	static {
 		oper.put("==", Kind.EQ);
@@ -40,12 +49,29 @@ public class Operator {
 		oper.put("::", Kind.DOUBLE_COLON);
 	}
 
+	/**
+	 * コンストラクタ<br>
+	 * 実体化不可
+	 */
 	private Operator() {}
 
+	/**
+	 * トークンとそれに続く文字が演算子かを調査し演算子かどうかを返す
+	 *
+	 * @param token		調査するトークン
+	 * @param letter	トークンに続く文字
+	 * @return		true:演算子		false:演算子でない
+	 */
 	public static boolean is(Token token, char letter) {
 		return oper.containsKey(token.str + letter);
 	}
 
+	/**
+	 * トークンが演算子かを調査し演算子なら種別を返す
+	 *
+	 * @param token	調査するトークン
+	 * @return		演算子の種別
+	 */
 	public static Kind select(Token token){
 		Kind kind = oper.get(token.str);
 		if(kind == null) return Kind.NONE;
