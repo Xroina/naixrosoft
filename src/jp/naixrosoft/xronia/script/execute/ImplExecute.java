@@ -1,7 +1,7 @@
 package jp.naixrosoft.xronia.script.execute;
 
 /**
- * 実行本体用インターフェース
+ * 外部実行本体用インターフェース
  *
  * @author xronia
  *
