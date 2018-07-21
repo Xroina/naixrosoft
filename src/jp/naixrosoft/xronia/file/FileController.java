@@ -81,6 +81,7 @@ public class FileController {
 			System.out.println(file + ":文字コード = " + encoding);
 		} else {
 			System.out.println(file + ":文字コードを判定できませんでした");
+			encoding = "UTF-8";
 		}
 
 		// 判定の初期化
