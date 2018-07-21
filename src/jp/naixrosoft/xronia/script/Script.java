@@ -2,6 +2,8 @@ package jp.naixrosoft.xronia.script;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -49,6 +51,8 @@ public class Script {
 	public void compile(String file, List<String> arguments)
 			throws IOException, ScriptException {
 
+		List<String> functions = new ArrayList<>();
+
 		arguments(arguments);				// 引数をバイトコードに展開
 
 		// ソースの存在するパスを取得する。
@@ -64,14 +68,22 @@ public class Script {
 			throw new ScriptException(
 					"\"" + file + "\" File Canonical Path Exception");
 		}
-		String base = FileController.getPath(canonicalPath);
+		String base = FileController.getPath(canonicalPath);	// PATH部だけ取得
 
 		// 最初の関数の定義
 		function.createNewFunction(canonicalPath);
 
+		// 関数読み込み本体
 		while(!function.isAddressMapping()) {
 			for(Entry<String, Integer> entry: function.getFunctionSet()) {
-				main(entry.getKey(), entry.getValue(), base);
+
+				if(Collections.binarySearch(functions, entry.getKey()) >= 0)
+					continue;					// コンパイル済みなら処理しない
+
+				main(entry.getKey(), entry.getValue(), base);	// コンパイル本体
+
+				functions.add(entry.getKey());	// コンパイル済み関数リストへ登録
+				Collections.sort(functions);	// ソートしておく
 			}
 		}
 
@@ -112,6 +124,7 @@ public class Script {
 	 */
 	private void main(String file, int label, String base)
 			throws IOException, ScriptException {
+
 		// ファイルからスクリプトを読む
 		FileController fc = new FileController(file);
 		String src = fc.Read();
