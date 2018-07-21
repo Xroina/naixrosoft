@@ -5,7 +5,7 @@ import jp.naixrosoft.xronia.script.exception.ByteCodeException;
 import jp.naixrosoft.xronia.script.exception.ExecuteException;
 
 /**
- * 実行クラス
+ * 外部実行本体クラス
  *
  * @author xronia
  *
