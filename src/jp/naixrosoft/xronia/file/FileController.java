@@ -35,8 +35,9 @@ public class FileController {
 	public String Read() throws IOException {
 		StringBuffer buf = new StringBuffer();
 
+		String encode = getEncode();	// エンコーディングの取得
 		FileInputStream fis = new FileInputStream(file);
-		InputStreamReader isr = new InputStreamReader(fis, detector());
+		InputStreamReader isr = new InputStreamReader(fis, encode);
 		BufferedReader br = new BufferedReader(isr);
 
 		int c;
@@ -48,16 +49,20 @@ public class FileController {
 		isr.close();
 		fis.close();
 
-		return buf.toString();
+		String text = buf.toString();
+		// BOMを取り除く
+		if(encode.indexOf("UTF") == 0 && text.charAt(0) == 65279) {
+			text = text.substring(1);
+		}
+		return text;
 	}
 
-  /**
-   * 文字コードを判定するメソッド
-   *
-   * @param ファイルパス
-   * @return 文字コード
-   */
-	public String detector() throws IOException {
+	/**
+	 * 文字コードを判定するメソッド
+	 *
+	 * @return	文字コード
+	 */
+	public String getEncode() throws IOException {
 		byte[] buf = new byte[4096];
 
 		FileInputStream fis = new FileInputStream(file);
@@ -77,12 +82,7 @@ public class FileController {
 
 		// 文字コード判定
 		String encoding = detector.getDetectedCharset();
-		if (encoding == null) {
-			System.out.println(file + ":文字コードを判定できませんでした");
-			encoding = "MS932";
-		} else {
-			System.out.println(file + ":文字コード = " + encoding);
-		}
+		if (encoding == null) encoding = "MS932";
 
 		// 判定の初期化
 		detector.reset();
