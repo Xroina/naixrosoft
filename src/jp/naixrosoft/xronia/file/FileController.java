@@ -77,11 +77,11 @@ public class FileController {
 
 		// 文字コード判定
 		String encoding = detector.getDetectedCharset();
-		if (encoding != null) {
-			System.out.println(file + ":文字コード = " + encoding);
-		} else {
+		if (encoding == null) {
 			System.out.println(file + ":文字コードを判定できませんでした");
-			encoding = "UTF-8";
+			encoding = "MS932";
+		} else {
+			System.out.println(file + ":文字コード = " + encoding);
 		}
 
 		// 判定の初期化
