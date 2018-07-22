@@ -57,6 +57,9 @@ public final class Keyword {
 		keywd.put("scrollLeft", Kind.SCROLL_LEFT);
 		keywd.put("scrollRight", Kind.SCROLL_RIGHT);
 		keywd.put("character", Kind.CHARACTER);
+		keywd.put("color", Kind.COLOR);
+		keywd.put("fgcolor", Kind.FGCOLOR);
+		keywd.put("bgcolor", Kind.BGCOLOR);
 	}
 
 	/**

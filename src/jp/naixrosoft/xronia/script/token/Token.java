@@ -82,6 +82,9 @@ public class Token {
 		SCROLL_PREV,	// 一行下へスクロール
 		SCROLL_LEFT,	// １列左へスクロール
 		SCROLL_RIGHT,	// １列右へスクロール
+		COLOR,			// カラー
+		FGCOLOR,		// フォアグラウンドカラー
+		BGCOLOR,		// バックグラウンドカラー
 		START,			// トークンの開始
 		END,			// トークンの終了
 	};

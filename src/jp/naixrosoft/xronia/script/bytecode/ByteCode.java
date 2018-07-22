@@ -73,12 +73,15 @@ public class ByteCode {
 		INT,
 		STICK_X,
 		STICK_Y,
+		BUTTON,
 		CHARACTER,
 		SCROLL_NEXT,	// 一行上へスクロール
 		SCROLL_PREV,	// 一行下へスクロール
 		SCROLL_LEFT,	// １列左へスクロール
 		SCROLL_RIGHT,	// １列右へスクロール
-		BUTTON,
+		COLOR,
+		FGCOLOR,
+		BGCOLOR,
 	};
 
 	private static OpCode[] enums = OpCode.values();	// オペコードの配列

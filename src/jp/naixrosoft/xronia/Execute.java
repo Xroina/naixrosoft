@@ -39,7 +39,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * クリアスクリーン<br>
+	 * クリアスクリーン<p>
 	 * コマンドプロンプトでは実行できないためスタブ
 	 */
 	@Override
@@ -48,7 +48,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * 座標指定<br>
+	 * 座標指定<p>
 	 * コマンドプロンプトでは指定できないためスタブ
 	 *
 	 * @param x	座標
@@ -60,7 +60,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * スティックX座標取得<br>
+	 * スティックX座標取得<p>
 	 * コマンドプロンプトでは取得不能のためスタブ
 	 *
 	 * @return	X座標
@@ -72,7 +72,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * スティックY座標取得<br>
+	 * スティックY座標取得<p>
 	 * コマンドプロンプトでは取得不能のためスタブ
 	 *
 	 * @return	Y座標
@@ -84,7 +84,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * スティックボタン取得<br>
+	 * スティックボタン取得<p>
 	 * コマンドプロンプトでは取得不能のためスタブ
 	 *
 	 * @return	ボタンビットマップ
@@ -95,7 +95,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * キャラクタ取得<br>
+	 * キャラクタ取得<p>
 	 * コマンドプロンプトでは取得不能のためスタブ
 	 *
 	 * @param x	座標
@@ -108,7 +108,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * 上スクロール<br>
+	 * 上スクロール<p>
 	 * コマンドプロンプトでは実施不能のためスタブ
 	 *
 	 * @param y1	スクロール開始位置
@@ -120,7 +120,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * 下スクロール<br>
+	 * 下スクロール<p>
 	 * コマンドプロンプトでは実施不能のためスタブ
 	 *
 	 * @param y1	スクロール開始位置
@@ -132,7 +132,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * 左スクロール<br>
+	 * 左スクロール<p>
 	 * コマンドプロンプトでは実施不能のためスタブ
 	 *
 	 * @param x1	スクロール開始位置
@@ -144,7 +144,7 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	}
 
 	/**
-	 * 右スクロール<br>
+	 * 右スクロール<p>
 	 * コマンドプロンプトでは実施不能のためスタブ
 	 *
 	 * @param x1	スクロール開始位置
@@ -152,6 +152,40 @@ public class Execute extends jp.naixrosoft.xronia.script.execute.Execute {
 	 */
 	@Override
 	public void scrollRight(int x1, int x2) {
+		;		// 何もしない
+	}
+
+	/**
+	 * 色指定<p>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param fgcolor	フォアグラウンドカラー
+	 * @param bgcolor	バックグラウンドカラー
+	 */
+	@Override
+	public void setColor(int fgcolor, int bgcolor) {
+		;		// 何もしない
+	}
+
+	/**
+	 * フォアグラウンドカラー指定<p>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param fgcolor	フォアグラウンドカラー
+	 */
+	@Override
+	public void setFgColor(int fgcolor) {
+		;		// 何もしない
+	}
+
+	/**
+	 * バックグラウンドカラー指定<p>
+	 * コマンドプロンプトでは実施不能のためスタブ
+	 *
+	 * @param bgcolor	バックグラウンドカラー
+	 */
+	@Override
+	public void setBgColor(int bgcolor) {
 		;		// 何もしない
 	}
 }

@@ -1027,6 +1027,18 @@ public class Perser {
 			parse_expr();
 			code.add(OpCode.SCROLL_RIGHT);
 			break;
+		case COLOR:
+			parse_expr();
+			code.add(OpCode.COLOR);
+			break;
+		case FGCOLOR:
+			parse_expr();
+			code.add(OpCode.FGCOLOR);
+			break;
+		case BGCOLOR:
+			parse_expr();
+			code.add(OpCode.BGCOLOR);
+			break;
 		case START:
 		case END:
 		case SEMICOLON:

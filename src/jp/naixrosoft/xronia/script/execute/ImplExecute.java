@@ -89,4 +89,26 @@ public interface ImplExecute {
 	 * @param x2	スクロール終了位置
 	 */
 	abstract void scrollRight(int x1, int x2);
+
+	/**
+	 * 色指定
+	 *
+	 * @param fgcolor	フォアグラウンドカラー
+	 * @param bgcolor	バックグラウンドカラー
+	 */
+	abstract void setColor(int fgcolor, int bgcolor);
+
+	/**
+	 * フォアグラウンドカラー指定
+	 *
+	 * @param fgcolor	フォアグラウンドカラー
+	 */
+	abstract void setFgColor(int fgcolor);
+
+	/**
+	 * バックグラウンドカラー指定
+	 *
+	 * @param bgcolor	バックグラウンドカラー
+	 */
+	abstract void setBgColor(int bgcolor);
 }

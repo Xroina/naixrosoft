@@ -393,6 +393,22 @@ public abstract class Execute extends VariableExecute implements ImplExecute {
 				sp -= 2;
 				break;
 
+			case COLOR:
+				setColor((int)stack.getInt(sp - 2),
+						 (int)stack.getInt(sp - 1));
+				sp -= 2;
+				break;
+
+			case FGCOLOR:
+				setFgColor((int)stack.getInt(sp - 1));
+				sp--;
+				break;
+
+			case BGCOLOR:
+				setBgColor((int)stack.getInt(sp - 1));
+				sp--;
+				break;
+
 			default:
 				throw new ExecuteException("Not Support Operator.");
 			}
