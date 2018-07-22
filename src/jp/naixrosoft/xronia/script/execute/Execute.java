@@ -15,7 +15,7 @@ import jp.naixrosoft.xronia.script.execute.Value.Type;
  * @author xronia
  *
  */
-public abstract class Execute extends VariableExecute implements ImplExecute {
+public abstract class Execute extends AbstVariableExecute implements ImplExecute {
 
 	protected Random rnd = new Random();				// 乱数
 	protected static final LocalDateTime baseTime =

@@ -9,7 +9,7 @@ import jp.naixrosoft.xronia.script.exception.ByteCodeException;
  * @author xronia
  *
  */
-public abstract class BaseExecute {
+public abstract class AbstBaseExecute {
 	protected final ByteCode code;			// バイトコード
 	protected Stack stack = new Stack();	// スタック
 	protected int sp = 0;					// スタックポインタ
@@ -22,7 +22,7 @@ public abstract class BaseExecute {
 	 *
 	 * @param c	バイトコード
 	 */
-	protected BaseExecute(ByteCode c) {
+	protected AbstBaseExecute(ByteCode c) {
 		code = c;
 	}
 

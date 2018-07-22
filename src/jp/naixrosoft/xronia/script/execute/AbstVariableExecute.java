@@ -15,7 +15,7 @@ import jp.naixrosoft.xronia.script.execute.Value.Type;
  * @author xronia
  *
  */
-public abstract class VariableExecute extends CalcExecute {
+public abstract class AbstVariableExecute extends AbstCalcExecute {
 	// 変数→スタック用マップ
 	protected Map<Integer, Integer> variable_to_stack = new HashMap<>();
 	// スタック→変数用マップ
@@ -26,7 +26,7 @@ public abstract class VariableExecute extends CalcExecute {
 	 *
 	 * @param c	バイトコード
 	 */
-	protected VariableExecute(ByteCode c) {
+	protected AbstVariableExecute(ByteCode c) {
 		super(c);
 	}
 

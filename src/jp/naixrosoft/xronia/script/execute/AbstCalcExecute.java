@@ -12,14 +12,14 @@ import jp.naixrosoft.xronia.script.execute.Value.Type;
  * @author xronia
  *
  */
-public abstract class CalcExecute extends BaseExecute {
+public abstract class AbstCalcExecute extends AbstBaseExecute {
 
 	/**
 	 * コントラクタ
 	 *
 	 * @param c	バイトコード
 	 */
-	protected CalcExecute(ByteCode c) {
+	protected AbstCalcExecute(ByteCode c) {
 		super(c);
 	}
 
